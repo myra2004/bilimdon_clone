@@ -1,5 +1,7 @@
 from app.db import Base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, relationship
+from sqlalchemy.orm import relationship
+
 
 
 class User(Base):
@@ -15,6 +17,10 @@ class User(Base):
     is_active = Column(Boolean)
     is_staff = Column(Boolean)
     is_superuser = Column(Boolean)
+
+    games= relationship("Game", back_populates="owner")
+    participations = relationship("Participation", back_populates="user_id")
+    submissions = relationship("Submission", back_populates="user_id")
 
 
 class Game(Base):
