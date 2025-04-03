@@ -1,23 +1,24 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session, declarative_base
-from fastapi import Depends
-from typing import Annotated
+from sqlalchemy.orm import sessionmaker,  DeclarativeBase
+
+from dotenv import load_dotenv
+import os
 
 
-DATABASE_URL = "postgresql+pscopg2://muqaddas:2004@localhost:5432/delete"
+load_dotenv()
+
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+
+
+DATABASE_URL = f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(DATABASE_URL)
 
-session= sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine)
 
-Base = declarative_base()
-
-def get_db():
-    db = session()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_dep = Annotated[Session, Depends(get_db)]
+class Base(DeclarativeBase):
+    pass
