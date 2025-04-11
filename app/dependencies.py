@@ -2,6 +2,7 @@ from app.db import *
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
+
 from typing import Annotated
 
 
