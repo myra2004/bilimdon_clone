@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, Response
 
 from app.db import *
 from app.schemas.auth import *
-from app.models import User
+from app.models.user import User
 from app.utils import *
 from app.dependencies import *
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post('/registration', response_model=AuthRegistrationResponse)

@@ -1,35 +1,22 @@
 from pydantic import BaseModel
 
-from datetime import datetime,  timezone
-from typing import Optional
-
-from app.models import Option
+from datetime import datetime
 
 
-class OptionGet(BaseModel):
+class OptionResponse(BaseModel):
     id: int
-    title: str
     question_id: int
-    is_correct: bool = False
-    created_at: datetime.now(timezone.utc)
+    title: str
+    is_correct: bool
+    created_at: datetime
 
 
 class OptionCreate(BaseModel):
     title: str
-    question: Optional[str]
-    is_correct: bool = False
-
-class OptionCreateResponse(OptionCreate):
-    id: int
-    created_at: datetime.now(timezone.utc)
     question_id: int
+    is_correct: bool
 
 
 class OptionUpdate(BaseModel):
-    title: Optional[str] = Option.title
-    question: Optional[str]
-    is_correct: Optional[bool] = Option.is_correct
-
-
-class OptionUpdateResponse(OptionUpdate):
-    id: int
+    title: str | None = None
+    is_correct: bool | None = None

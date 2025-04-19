@@ -1,35 +1,37 @@
 from pydantic import BaseModel
 
 from typing import Optional
-from datetime import datetime, timezone
-
-from app.models import Question
+from datetime import datetime
 
 
-class QuestionGet(BaseModel):
+class QuestionResponse(BaseModel):
     id: int
+    owner_id: int
     title: str
-    description: Optional[str] = 'Not Information'
+    description: Optional[str] = None
     topic_id: int
-    created: Optional[datetime] = datetime.now(timezone.utc)
-    updated: Optional[datetime] = datetime.now(timezone.utc)
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
+            "example": {
+                "title": "Question",
+                "description": "Question description",
+
+            }
+        }
+    }
 
 
 class QuestionCreate(BaseModel):
     title: str
-    description: Optional[str] = 'Not Information'
-    topic: Optional[str] = 'Not Information'
-
-
-class QuestionCreateResponse(QuestionCreate):
-    pass
+    description: Optional[str] = None
+    topic_id: int
 
 
 class QuestionUpdate(BaseModel):
-    title: Optional[str] = Question.title
-    description: Optional[str] = Question.description
-    topic: Optional[str]
-
-
-class QuestionUpdateResponse(QuestionUpdate):
-    updated: Optional[datetime] = datetime.now(timezone.utc)
+    title: Optional[str] = None
+    description: Optional[str] = None
+    topic_id: int
