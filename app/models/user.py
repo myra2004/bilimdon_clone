@@ -1,17 +1,19 @@
+from fastapi import Request
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy import String, DateTime, Date, Integer, Boolean, ForeignKey
+from sqlalchemy import String, DateTime, Date
 
 from datetime import datetime, date, timezone
 from typing import Optional, List
 
 from app.db import Base
+from app.models import Game, Submission, Participation
 
 
 class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str] = mapped_column(unique=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(128))
     username: Mapped[str] = mapped_column(String(32), unique=True)
     first_name: Mapped[str] = mapped_column(String(32), nullable=True)
@@ -25,3 +27,9 @@ class User(Base):
     owned_games: Mapped[List["Game"]] = relationship(back_populates="owner")
     submissions: Mapped[List["Submission"]] = relationship(back_populates="owner")
     participations: Mapped[List["Participation"]] = relationship(back_populates="user")
+
+    async def __admin_repr__(self, request: Request):
+        return f"{self.first_name} {self.last_name}"
+
+    async def __admin_select2_repr__(self, request: Request):
+        return f"<span><b>{self.first_name} {self.last_name}</b></span>"

@@ -1,12 +1,5 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.openapi.models import APIKey, APIKeyIn, SecuritySchemeType
+from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
-from fastapi.security import HTTPBearer
-
-from typing import Union
-import time
-from datetime import datetime
 
 from app.routers.auth import router as auth_router
 from app.routers.question import router as question_router
@@ -15,10 +8,10 @@ from app.routers.topic import router as topic_router
 from app.routers.game import router as game_router
 from app.routers.participation import router as p_router
 from app.routers.submission import router as sub_router
+from app.admin.settings import admin
 
 
 app = FastAPI()
-
 
 
 @app.get("/")
@@ -61,3 +54,6 @@ def custom_openapi():
     return app.openapi_schema
 
 app.openapi = custom_openapi
+
+
+admin.mount_to(app=app)

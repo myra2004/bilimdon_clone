@@ -1,11 +1,9 @@
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy import String, DateTime, Date, Integer, Boolean, ForeignKey
+from sqlalchemy import DateTime, Integer, ForeignKey
 
-from datetime import datetime, date, timezone
-from typing import Optional, List
+from datetime import datetime, timezone
 
 from app.db import Base
-
 
 
 class Participation(Base):

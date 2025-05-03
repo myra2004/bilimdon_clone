@@ -29,7 +29,6 @@ async def get_option(id: int, db: db_dep):
 async def create_option(
         option: OptionCreate,
         db: db_dep,
-        current_user: current_user_dep
 ):
     existing_correct_option = db.query(Option).filter(
         Option.question_id == option.question_id,

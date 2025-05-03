@@ -84,15 +84,15 @@ async def update_game(
             detail="Game not found."
         )
 
-    # if game.start_time and not game.start_time.tzinfo:
-    #     game.start_time = game.start_time.replace(tzinfo=timezone.utc)
+    if game.start_time and not game.start_time.tzinfo:
+        game.start_time = game.start_time.replace(tzinfo=timezone.utc)
 
-    # is_permissible = db_game.start_time < datetime.now(timezone.utc)
-    # if is_permissible:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="You cannot update this game, as it already started or finished."
-    #     )
+    is_permissible = db_game.start_time < datetime.now(timezone.utc)
+    if is_permissible:
+        raise HTTPException(
+            status_code=400,
+            detail="You cannot update this game, as it already started or finished."
+        )
 
     db_game.title = game.title if game.title else db_game.title
     db_game.description = game.description if game.description else db_game.description
